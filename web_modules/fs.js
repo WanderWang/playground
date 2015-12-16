@@ -1,21 +1,6 @@
 var filesystem = exports.data = {
 	"node_modules": {
 		"": true,
-		"jade-loader": {
-			"": true,
-			"index.js": "injected"
-		},
-		"jade": {
-			"": true,
-			"lib": {
-				"": true,
-				"runtime.js": new Buffer(require("raw!jade-loader/node_modules/jade/lib/runtime.js"), "utf-8")
-			},
-			"web_modules": {
-				"": true,
-				"fs": new Buffer(require("raw!jade-loader/web_modules/fs.js"), "utf-8")
-			}
-		},
 		"css-loader": {
 			"": true,
 			"index.js": "injected"
@@ -28,8 +13,8 @@ var filesystem = exports.data = {
 	"addStyle.js": new Buffer(require("raw!style-loader/addStyle.js"), "utf-8"),
 	"folder": {
 		"": true,
-		"entry.js": new Buffer("require('./style.css');\nvar template = require('./template.jade');\ndocument.write(template({hello: 'World!'}));", "utf-8"),
-		"template.jade": new Buffer("h1 Hello #{hello}", "utf-8"),
+		"entry.js": new Buffer("require('./style.css');\n", "utf-8"),
+		"template.ts": new Buffer("class A (\n)", "utf-8"),
 		"style.css": new Buffer("body {\n\tbackground: #333;\n\tcolor: #EEE;\n}", "utf-8")
 	}
 };

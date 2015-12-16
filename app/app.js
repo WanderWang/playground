@@ -6,7 +6,7 @@ var CodeMirror = require("code-mirror");
 window.fsData = fs.data;
 
 $(function() {
-	$("body").html(require("./body.jade")());
+	
 	var currentFileInEditor = "entry.js";
 	var editor = CodeMirror($(".editor")[0], {
 		value: fs.readFileSync(fs.join("/folder", currentFileInEditor)).toString(),
@@ -40,7 +40,6 @@ $(function() {
 		entry: "./entry.js",
 		module: {
 			loaders: [
-				{ test: /\.jade$/, loader: "jade-loader" },
 				{ test: /\.css$/, loader: "style-loader!css-loader" }
 			]
 		},
