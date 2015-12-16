@@ -1,5 +1,4 @@
 var path = require("path");
-var NormalModuleReplacementPlugin = require("webpack/lib/NormalModuleReplacementPlugin");
 module.exports = {
 	context: __dirname,
 	entry: "./app/app.js",
@@ -12,6 +11,7 @@ module.exports = {
 	module: {
 		loaders: [
 			{ test: /\.json$/,   loader: "json-loader" },
+			{ test: /\.d.ts/,   loader: "raw-loader" },
 			{ test: /\.coffee$/, loader: "coffee-loader" },
 			{ test: /\.css$/,    loader: "style-loader!css-loader" },
 			{ test: /\.less$/,   loader: "style-loader!css-loader!less-loader" },

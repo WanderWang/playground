@@ -40,7 +40,8 @@ $(function() {
 		entry: "./entry.js",
 		module: {
 			loaders: [
-				{ test: /\.css$/, loader: "style-loader!css-loader" }
+				{ test: /\.css$/, loader: "style-loader!css-loader" },
+				{ test: /\.ts/, loader: "web-ts-loader" }
 			]
 		},
 		output: {

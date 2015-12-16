@@ -8,13 +8,18 @@ var filesystem = exports.data = {
 		"style-loader": {
 			"": true,
 			"index.js": "injected",
+		},
+		"web-ts-loader": {
+			"": true,
+			"index.js": "injected",
+			"TypeScriptWebpackHost":"injected "
 		}
 	},
 	"addStyle.js": new Buffer(require("raw!style-loader/addStyle.js"), "utf-8"),
 	"folder": {
 		"": true,
-		"entry.js": new Buffer("require('./style.css');\n", "utf-8"),
-		"template.ts": new Buffer("class A (\n)", "utf-8"),
+		"entry.js": new Buffer("require('./a.ts');\n", "utf-8"),
+		"a.ts": new Buffer("var a = 1; export = a", "utf-8"),
 		"style.css": new Buffer("body {\n\tbackground: #333;\n\tcolor: #EEE;\n}", "utf-8")
 	}
 };
