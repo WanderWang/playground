@@ -47,9 +47,6 @@ $(function() {
 		output: {
 			path: "/output",
 			filename: "bundle.js"
-		},
-		optimize: {
-			maxChunks: 1
 		}
 	});
 	

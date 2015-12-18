@@ -1,36 +1,40 @@
 {
-	"name": "webpack-playground",
-	"version": "0.11.0",
-	"author": "Tobias Koppers @sokra",
-	"description": "In-browser playground for webpack",
-	"dependencies": {
-		"webpack": "0.11.x",
-		"webpack-dev-server": "0.11.x",
-		"enhanced-resolve":"0.5.15",
-		"json-loader": "0.5.x",
-		"url-loader": "0.5.x",
-		"file-loader": "0.5.x",
-		"jshint-loader": "0.5.x",
-		"bundle-loader": "0.5.x",
-		"style-loader": "0.6.x",
-		"css-loader": "0.6.x",
-		"less-loader": "0.5.x",
-		"exports-loader": "0.6.x",
-		"raw-loader": "0.5.x",
-		"bootstrap": "https://github.com/twitter/bootstrap/tarball/v2.3.2"
-	},
-	"licenses": [
-		{
-			"type": "MIT",
-			"url": "http://www.opensource.org/licenses/mit-license.php"
-		}
-	],
-	"scripts": {
-		"start": "webpack-dev-server -d --colors --content-page index.html"
-	},
-	"engines": {
-		"node":  ">=0.1.30",
-		"npm":"2.x"
-	},
-	"homepage": "http://github.com/webpack/playground"
+  "name": "webpack-playground",
+  "version": "0.11.0",
+  "author": "Tobias Koppers @sokra",
+  "description": "In-browser playground for webpack",
+  "dependencies": {
+    "bluebird": "^3.1.1",
+    "bootstrap": "https://github.com/twitter/bootstrap/tarball/v2.3.2",
+    "bundle-loader": "0.5.x",
+    "css-loader": "0.6.x",
+    "enhanced-resolve": "0.5.15",
+    "exports-loader": "0.6.x",
+    "file-loader": "0.5.x",
+    "jshint-loader": "0.5.x",
+    "json-loader": "0.5.x",
+    "less-loader": "0.5.x",
+    "object-assign": "^4.0.1",
+    "raw-loader": "0.5.x",
+    "style-loader": "0.6.x",
+    "typescript": "^1.7.5",
+    "url-loader": "0.5.x",
+    "webpack": "^1.12.3",
+    "webpack-dev-server": "^1.12.1"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://www.opensource.org/licenses/mit-license.php"
+    }
+  ],
+  "scripts": {
+    "start": "webpack-dev-server -d --colors --content-page index.html",
+    "up": "node ./node_modules/npm/bin/npm-cli.js install"
+  },
+  "engines": {
+    "node": ">=0.1.30",
+    "npm": "2.x"
+  },
+  "homepage": "http://github.com/webpack/playground"
 }
