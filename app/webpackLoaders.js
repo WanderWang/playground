@@ -6,5 +6,7 @@ module.exports = function (filename) {
 			return require("style-loader");
 		case "/node_modules/web-ts-loader/index.js":
 			return require("./web-ts-loader");
+		case "/node_modules/typescript-loader/index.js":
+			return require("typescript-loader");
 	}
 };

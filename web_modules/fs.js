@@ -1,3 +1,10 @@
+function prepareStaticSource(moduleId) {
+  var filename = require.resolve(moduleId);
+  var text = fs.readFileSync(filename, 'utf8');
+  return {filename: filename, text: text};
+}
+
+
 var filesystem = exports.data = {
 	"node_modules": {
 		"": true,
@@ -13,6 +20,21 @@ var filesystem = exports.data = {
 			"": true,
 			"index.js": "injected",
 			"TypeScriptWebpackHost":"injected "
+		},
+		"typescript-loader":{
+			
+			"": true,
+			"index.js": "injected",
+			"TypeScriptWebpackHost.js":"injected"		
+		},
+		
+		"typescript":{
+			"": true,
+			"lib":{
+				"": true,
+				"lib.d.ts":new Buffer(require("raw!typescript/lib/lib.d.ts"), "utf-8").toString()
+			}
+			
 		}
 	},
 	"addStyle.js": new Buffer(require("raw!style-loader/addStyle.js"), "utf-8"),
@@ -23,6 +45,11 @@ var filesystem = exports.data = {
 		"style.css": new Buffer("body {\n\tbackground: #333;\n\tcolor: #EEE;\n}", "utf-8")
 	}
 };
+
+// filesystem[]
+//   var filename = require.resolve(moduleId);
+//   var text = fs.readFileSync(filename, 'utf8');
+//   return {filename: filename, text: text};
 
 
 var MemoryOutputFilesystem = require("webpack/lib/MemoryOutputFilesystem");

@@ -41,7 +41,8 @@ $(function() {
 		module: {
 			loaders: [
 				{ test: /\.css$/, loader: "style-loader!css-loader" },
-				{ test: /\.ts/, loader: "web-ts-loader" }
+				{ test: /\.ts/, loader: "web-ts-loader" },
+				{ test: /\d.ts/,loader:"raw-loader"}
 			]
 		},
 		output: {

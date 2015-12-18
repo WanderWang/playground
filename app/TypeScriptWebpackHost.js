@@ -3,20 +3,19 @@
  */
 'use strict';
 
-var fs            = require('fs');
-var util          = require('util');
-var path          = require('path');
-var objectAssign  = require('object-assign');
-var Promise       = require('bluebird');
+var fs = require('fs');
+var util = require('util');
+var path = require('path');
+var objectAssign = require('object-assign');
+var Promise = require('bluebird');
 
 function prepareStaticSource(moduleId) {
-  var filename = require.resolve(moduleId);
-  var text = fs.readFileSync(filename, 'utf8');
-  return {filename: filename, text: text};
+  // var filename = require.resolve(moduleId);
+  var text = fs.readFileSync(moduleId, 'utf8');
+  return { filename: moduleId, text: text };
 }
 
-var RUNTIME = prepareStaticSource('./webpack-runtime.d.ts');
-var LIB     = prepareStaticSource('typescript/bin/lib.d.ts');
+var LIB = prepareStaticSource('/node_modules/typescript/lib/lib.d.ts');
 
 function TypeScriptWebpackHost(options, fs, ts) {
   ts = ts || require('typescript');
@@ -33,8 +32,6 @@ function TypeScriptWebpackHost(options, fs, ts) {
   this._files = {};
   this._services = this.ts.createLanguageService(this, this.ts.createDocumentRegistry());
   this._runtimeRead = null;
-
-  this._addFile(RUNTIME.filename, RUNTIME.text);
   this._addFile(LIB.filename, LIB.text);
 }
 
@@ -58,16 +55,16 @@ TypeScriptWebpackHost.prototype.getScriptVersion = function getScriptVersion(fil
 TypeScriptWebpackHost.prototype.getScriptSnapshot = function getScriptSnapshot(filename) {
   var file = this._files[filename];
   return {
-    getText: function(start, end) {
+    getText: function (start, end) {
       return file.text.substring(start, end);
     },
-    getLength: function() {
+    getLength: function () {
       return file.text.length;
     },
-    getLineStartPositions: function() {
+    getLineStartPositions: function () {
       return [];
     },
-    getChangeRange: function(oldSnapshot) {
+    getChangeRange: function (oldSnapshot) {
       return undefined;
     }
   };
@@ -97,7 +94,7 @@ TypeScriptWebpackHost.prototype.getCompilationSettings = function getCompilation
 /**
  * Implementation of TypeScript Language Services Host interface.
  */
-TypeScriptWebpackHost.prototype.getDefaultLibFilename = function getDefaultLibFilename(options) {
+TypeScriptWebpackHost.prototype.getDefaultLibFileName = function getDefaultLibFilename(options) {
   return LIB.filename;
 };
 
@@ -116,14 +113,14 @@ TypeScriptWebpackHost.prototype.log = function log(message) {
 TypeScriptWebpackHost.prototype._findImportDeclarations = function _findImportDeclarations(filename) {
   var node = this._services.getSourceFile(filename);
   var result = [];
-  var visit = function(node) {
+  var visit = function (node) {
     if (node.kind === this.ts.SyntaxKind.ImportDeclaration) {
       // we need this check to ensure that we have an external import
       if (node.moduleReference.hasOwnProperty("expression")) {
         result.push(node.moduleReference.expression.text);
       }
     } else if (node.kind === this.ts.SyntaxKind.SourceFile) {
-      result = result.concat(node.referencedFiles.map(function(f) {
+      result = result.concat(node.referencedFiles.map(function (f) {
         return path.resolve(path.dirname(node.filename), f.filename);
       }));
     }
@@ -142,12 +139,12 @@ TypeScriptWebpackHost.prototype._addFile = function _addFile(filename, text) {
       version = version + 1;
     }
   }
-  this._files[filename] = {text: text, version: version};
+  this._files[filename] = { text: text, version: version };
 };
 
 TypeScriptWebpackHost.prototype._readFile = function _readFile(filename) {
   var readFile = Promise.promisify(this._fs.readFile.bind(this._fs));
-  return readFile(filename).then(function(buf) {
+  return readFile(filename).then(function (buf) {
     return buf.toString('utf8');
   });
 };
@@ -158,14 +155,14 @@ TypeScriptWebpackHost.prototype._readFileAndAdd = function _readFileAndAdd(filen
 
 TypeScriptWebpackHost.prototype._resolve = function _resolve(resolver, filename, dep) {
   return resolver(path.dirname(filename), dep)
-    .error(function(error) {
+    .error(function (error) {
       if (path.extname(filename).length) {
         return resolver(path.dirname(filename), dep + ".d.ts")
       } else {
         throw error;
       }
     })
-    .error(function(error) {
+    .error(function (error) {
       if (path.extname(filename).length) {
         return resolver(path.dirname(filename), dep + ".ts")
       } else {
@@ -174,15 +171,15 @@ TypeScriptWebpackHost.prototype._resolve = function _resolve(resolver, filename,
     })
 }
 
-TypeScriptWebpackHost.prototype._addDependencies = function(resolver, filename) {
-  var dependencies = this._findImportDeclarations(filename).map(function(dep) {
-    return this._resolve(resolver, filename, dep).then(function(filename) {
+TypeScriptWebpackHost.prototype._addDependencies = function (resolver, filename) {
+  var dependencies = this._findImportDeclarations(filename).map(function (dep) {
+    return this._resolve(resolver, filename, dep).then(function (filename) {
       var alreadyExists = this._files[filename];
       var added = this._readFileAndAdd(filename);
       // This is d.ts which doesn't go through typescript-loader separately so
       // we should take care of it by analyzing its dependencies here.
       if (/\.d.ts$/.exec(filename) && !alreadyExists) {
-        added = added.then(function() {
+        added = added.then(function () {
           return this._addDependencies(resolver, filename);
         }.bind(this));
       }
@@ -200,13 +197,13 @@ TypeScriptWebpackHost.prototype.emit = function emit(resolver, filename, text) {
 
   // Check if we need to compiler Webpack runtime definitions.
   if (!this._runtimeRead) {
-    this._services.getEmitOutput(RUNTIME.filename);
+    // this._services.getEmitOutput(RUNTIME.filename);
     this._runtimeRead = true;
   }
 
-  return this._addDependencies(resolver, filename).then(function() {
+  return this._addDependencies(resolver, filename).then(function () {
     var output = this._services.getEmitOutput(filename);
-    if (output.emitOutputStatus === this.ts.EmitReturnStatus.Succeeded) {
+    if (!output.emitSkipped) {
       return output;
     } else {
       var diagnostics = this._services
