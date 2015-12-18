@@ -19,7 +19,7 @@ var filesystem = exports.data = {
 	"folder": {
 		"": true,
 		"entry.js": new Buffer("require('./a.ts');\n", "utf-8"),
-		"a.ts": new Buffer("var a = 1; export = a", "utf-8"),
+		"a.ts": new Buffer("class A { constructor(){console.log(111)}};export = A", "utf-8"),
 		"style.css": new Buffer("body {\n\tbackground: #333;\n\tcolor: #EEE;\n}", "utf-8")
 	}
 };
