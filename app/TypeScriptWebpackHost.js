@@ -8,6 +8,7 @@ var util = require('util');
 var path = require('path');
 var objectAssign = require('object-assign');
 var Promise = require('bluebird');
+var ts = require("typescript")
 
 function prepareStaticSource(moduleId) {
   // var filename = require.resolve(moduleId);
@@ -20,7 +21,7 @@ var LIB = prepareStaticSource('/node_modules/typescript/lib/lib.d.ts');
 function TypeScriptWebpackHost(options, fs, ts) {
   ts = ts || require('typescript');
   this.ts = ts;
-  this.options = {};
+  this.options = {jsx:2};//todo
   objectAssign(this.options, {
     target: this.ts.ScriptTarget.ES5,
     module: this.ts.ModuleKind.CommonJS,
@@ -28,6 +29,9 @@ function TypeScriptWebpackHost(options, fs, ts) {
     verbose: false
   });
   objectAssign(this.options, options);
+  this.options.jsx = ts.JsxEmit.React;
+  alert (ts.JsxEmit.React)
+  // this.options.jsx = "preserve";
   this._fs = fs;
   this._files = {};
   this._services = this.ts.createLanguageService(this, this.ts.createDocumentRegistry());
@@ -223,6 +227,7 @@ TypeScriptWebpackHost.prototype.emit = function emit(resolver, filename, text) {
       diagnostics.forEach(function (diagnostic) {
 
         console.log(diagnostic.messageText);
+     
         // var result = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start);
         // var message =  ts.flattenDiagnosticMessageText(diagnostic.messageText, '\n');
         // console.log (message);

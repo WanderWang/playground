@@ -3,12 +3,16 @@
  */
 'use strict';
 
-var Promise               = require('bluebird');
-var loaderUtils           = require('loader-utils');
-var path                  = require('path');
+var Promise = require('bluebird');
+var loaderUtils = require('loader-utils');
+var path = require('path');
 var TypeScriptWebpackHost = require('./TypeScriptWebpackHost');
 
 function typescriptLoader(text) {
+
+
+  console.log(111)
+
   if (this.cacheable) {
     this.cacheable();
   }
@@ -23,6 +27,7 @@ function typescriptLoader(text) {
     } else {
       var ts = require('typescript');
     }
+
     if (options.target) {
       options.target = parseOptionTarget(options.target, ts);
     }
@@ -30,11 +35,12 @@ function typescriptLoader(text) {
       options,
       this._compiler.inputFileSystem,
       ts
-    );
+      );
   }
 
   this._compiler.typeScriptWebpackHost.emit(resolver, filename, text)
-    .then(function(output) {
+    .then(function (output) {
+      console.log(output)
       var result = findResultFor(output, filename);
       var sourceFilename = loaderUtils.getRemainingRequest(this);
       var current = loaderUtils.getCurrentRequest(this);
@@ -47,7 +53,7 @@ function typescriptLoader(text) {
       sourceMap.sourcesContent = [text];
       cb(null, result.text, sourceMap);
     }.bind(this))
-    .catch(TypeScriptWebpackHost.TypeScriptCompilationError, function(err) {
+    .catch(TypeScriptWebpackHost.TypeScriptCompilationError, function (err) {
       var errors = formatErrors(err.diagnostics);
       errors.forEach(this.emitError, this);
       cb(null, codegenErrorReport(errors));
@@ -62,10 +68,13 @@ function findResultFor(output, filename) {
   for (var i = 0; i < output.outputFiles.length; i++) {
     var o = output.outputFiles[i];
     var outputFileName = path.normalize(o.name);
-    if (outputFileName.replace(/\.js$/, '.ts') === filename) {
+    if (outputFileName.replace(/\.js$/, '.ts') === filename ||
+      outputFileName.replace(/\.js$/, '.tsx') === filename
+      ) {
       text = o.text;
     }
-    if (outputFileName.replace(/\.js.map$/, '.ts') === filename) {
+    if (outputFileName.replace(/\.js.map$/, '.ts') === filename ||
+      outputFileName.replace(/\.js.map$/, '.tsx') === filename) {
       sourceMap = o.text;
     }
   }
@@ -89,28 +98,28 @@ function parseOptionTarget(target, ts) {
 
 function codegenErrorReport(errors) {
   return errors
-    .map(function(error) {
+    .map(function (error) {
       return 'console.error(' + JSON.stringify(error) + ');';
     })
     .join('\n');
 }
 
-function hasExtensionError(d){
+function hasExtensionError(d) {
   return d.messageText.indexOf('must have extension') > -1;
 }
 
 function extensionErrorFilter(errors) {
   var otherErrors = !errors.every(hasExtensionError);
-  return function(d) {
+  return function (d) {
     return !(otherErrors && hasExtensionError(d));
-  } 
+  }
 }
 
 function formatErrors(errors) {
   return errors
     .filter(extensionErrorFilter(errors))
-    .map(function(diagnostic) {
-      return ( diagnostic.messageText );
+    .map(function (diagnostic) {
+      return (diagnostic.messageText);
     });
 }
 
