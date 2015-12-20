@@ -1,9 +1,3 @@
-function prepareStaticSource(moduleId) {
-  var filename = require.resolve(moduleId);
-  var text = fs.readFileSync(filename, 'utf8');
-  return {filename: filename, text: text};
-}
-
 
 var filesystem = exports.data = {
 	"node_modules": {
@@ -32,25 +26,20 @@ var filesystem = exports.data = {
 			"": true,
 			"lib":{
 				"": true,
-				"lib.d.ts":new Buffer(require("raw!typescript/lib/lib.d.ts"), "utf-8").toString()
-			}
-			
+				"lib.d.ts":a = require("raw!./lib.txt")
+			}	
 		}
 	},
-	"addStyle.js": new Buffer(require("raw!style-loader/addStyle.js"), "utf-8"),
 	"folder": {
 		"": true,
-		"entry.js": new Buffer("require('./a.ts');\n", "utf-8"),
+		"entry.js": new Buffer("var a = require('./a.ts');\nconsole.log(a)", "utf-8"),
 		"a.ts": new Buffer("class A { constructor(){console.log(111)}};export = A", "utf-8"),
 		"style.css": new Buffer("body {\n\tbackground: #333;\n\tcolor: #EEE;\n}", "utf-8")
 	}
 };
-
-// filesystem[]
-//   var filename = require.resolve(moduleId);
-//   var text = fs.readFileSync(filename, 'utf8');
-//   return {filename: filename, text: text};
-
+// var endLength = a.length;
+// var startLength = "module.exports = ".length;
+// filesystem.node_modules.typescript.lib["lib.d.ts"] = a.substr(startLength);
 
 var MemoryOutputFilesystem = require("webpack/lib/MemoryOutputFilesystem");
 var MemoryInputFilesystem  = require("enhanced-resolve/lib/MemoryInputFilesystem");
