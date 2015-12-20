@@ -202,31 +202,36 @@ TypeScriptWebpackHost.prototype.emit = function emit(resolver, filename, text) {
   }
 
   return this._addDependencies(resolver, filename).then(function () {
+
+
+
     var output = this._services.getEmitOutput(filename);
-    
-       var diagnostics = this._services
-        .getCompilerOptionsDiagnostics()
-        .concat(this._services.getSyntacticDiagnostics(filename))
-        .concat(this._services.getSemanticDiagnostics(filename));
-        
-        
-        diagnostics.forEach(function(diagnostic){
-          
-          console.log (diagnostic.messageText);
-            // var result = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start);
-            // var message =  ts.flattenDiagnosticMessageText(diagnostic.messageText, '\n');
-            // console.log (message);
-        });
-    
-    if (!output.emitSkipped) {
+
+    if (output.emitSkipped) {
+      throw new Error("skip typescript compiler");
       return output;
-    } else {
-      var diagnostics = this._services
-        .getCompilerOptionsDiagnostics()
-        .concat(this._services.getSyntacticDiagnostics(filename))
-        .concat(this._services.getSemanticDiagnostics(filename));
-      throw new TypeScriptCompilationError(diagnostics);
     }
+
+    var diagnostics = this._services
+      .getCompilerOptionsDiagnostics()
+      .concat(this._services.getSyntacticDiagnostics(filename))
+      .concat(this._services.getSemanticDiagnostics(filename));
+
+    if (diagnostics.length > 0) {
+
+
+      diagnostics.forEach(function (diagnostic) {
+
+        console.log(diagnostic.messageText);
+        // var result = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start);
+        // var message =  ts.flattenDiagnosticMessageText(diagnostic.messageText, '\n');
+        // console.log (message);
+      });
+
+      throw new TypeScriptCompilationError(diagnostics);
+
+    }
+    return output;
   }.bind(this));
 };
 

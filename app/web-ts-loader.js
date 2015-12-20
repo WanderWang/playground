@@ -110,14 +110,7 @@ function formatErrors(errors) {
   return errors
     .filter(extensionErrorFilter(errors))
     .map(function(diagnostic) {
-      var lineChar;
-      if (diagnostic.file) {
-        lineChar = diagnostic.file.getLineAndCharacterFromPosition(diagnostic.start);
-      }
-      return (
-        (lineChar ? formatLineChar(lineChar) + ' ': '')
-        + diagnostic.messageText
-      );
+      return ( diagnostic.messageText );
     });
 }
 
