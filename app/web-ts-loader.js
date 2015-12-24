@@ -7,9 +7,12 @@ var Promise = require('bluebird');
 var loaderUtils = require('loader-utils');
 var path = require('path');
 var TypeScriptWebpackHost = require('./TypeScriptWebpackHost');
+var service = require("./LanguageService.js");
 
 function typescriptLoader(text) {
 
+  service.init();
+  return "module.exports = A";
 
   if (this.cacheable) {
     this.cacheable();

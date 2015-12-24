@@ -1,5 +1,6 @@
 
 var filesystem = exports.data = {
+	"":true,
 	"node_modules": {
 		"": true,
 		"css-loader": {

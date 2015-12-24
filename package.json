@@ -18,6 +18,7 @@
     "raw-loader": "^0.5.1",
     "style-loader": "0.6.x",
     "typescript": "^1.7.5",
+    "typescript-service-helper": "file:///Users/wander/Documents/EgretProjects/TypeScriptServiceHelper",
     "url-loader": "0.5.x",
     "webpack": "^1.12.3",
     "webpack-dev-server": "^1.12.1"
