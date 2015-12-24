@@ -13,10 +13,12 @@ var ts = require("typescript")
 function prepareStaticSource(moduleId) {
   // var filename = require.resolve(moduleId);
   var text = fs.readFileSync(moduleId, 'utf8');
+  console.log (text.substr(0,100))
   return { filename: moduleId, text: text };
 }
 
 var LIB = prepareStaticSource('/node_modules/typescript/lib/lib.d.ts');
+var REACT = prepareStaticSource("/typings/react/react.d.ts")
 
 function TypeScriptWebpackHost(options, fs, ts) {
   ts = ts || require('typescript');
@@ -37,6 +39,7 @@ function TypeScriptWebpackHost(options, fs, ts) {
   this._services = this.ts.createLanguageService(this, this.ts.createDocumentRegistry());
   this._runtimeRead = null;
   this._addFile(LIB.filename, LIB.text);
+  this._addFile(REACT.filename,REACT.text);
 }
 
 /**
@@ -125,7 +128,7 @@ TypeScriptWebpackHost.prototype._findImportDeclarations = function _findImportDe
       }
     } else if (node.kind === this.ts.SyntaxKind.SourceFile) {
       result = result.concat(node.referencedFiles.map(function (f) {
-        return path.resolve(path.dirname(node.filename), f.filename);
+        return path.resolve(path.dirname(node.fileName), f.fileName);
       }));
     }
     this.ts.forEachChild(node, visit);

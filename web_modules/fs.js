@@ -26,8 +26,15 @@ var filesystem = exports.data = {
 			"": true,
 			"lib":{
 				"": true,
-				"lib.d.ts":a = require("raw!./lib.txt")
+				"lib.d.ts":require("raw!./lib.txt")
 			}	
+		}
+	},
+	"typings":{
+		"": true,
+		"react":{
+			"": true,
+			"react.d.ts":require("raw!./react.txt")
 		}
 	},
 	"folder": {

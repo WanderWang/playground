@@ -11,8 +11,6 @@ var TypeScriptWebpackHost = require('./TypeScriptWebpackHost');
 function typescriptLoader(text) {
 
 
-  console.log(111)
-
   if (this.cacheable) {
     this.cacheable();
   }
