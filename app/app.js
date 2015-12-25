@@ -3,32 +3,35 @@ require("mybootstrap");
 var webpack = require("webpack");
 var fs = require("fs");
 var path = require("path");
-window.fsData = fs.data;
 window.fs = fs;
 
 $(function () {
-	
+
 	$(".compile").click(compile);
-
-	var compiler = webpack({
-		inputFileSystem: fs,
-		outputFileSystem: fs,
-		context: "/folder",
-		entry: "./entry.js",
-		module: {
-			loaders: [
-				{ test: /\.css$/, loader: "style-loader!css-loader" },
-				{ test: /\.ts/, loader: "web-ts-loader?jsx=react" },
-				{ test: /\.tsx/, loader: "web-ts-loader?jsx=react" }
-			]
-		},
-		output: {
-			path: "/output",
-			filename: "bundle.js"
-		}
-	});
-
+	var compiler = createCompiler();
 	compile();
+
+	
+	function createCompiler() {
+		var compiler = webpack({
+			inputFileSystem: fs,
+			outputFileSystem: fs,
+			context: "/folder",
+			entry: "./entry.js",
+			module: {
+				loaders: [
+					{ test: /\.css$/, loader: "style-loader!css-loader" },
+					{ test: /\.ts/, loader: "web-ts-loader?jsx=react" },
+					{ test: /\.tsx/, loader: "web-ts-loader?jsx=react" }
+				]
+			},
+			output: {
+				path: "/output",
+				filename: "bundle.js"
+			}
+		});
+		return compiler;
+	}
 
 	function compile() {
 		compiler.run(function (err, stats) {
