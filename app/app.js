@@ -2,7 +2,6 @@ var $ = require("jquery");
 require("mybootstrap");
 var webpack = require("webpack");
 var fs = require("fs");
-var CodeMirror = require("code-mirror");
 var path = require("path");
 window.fsData = fs.data;
 window.fs = fs;
