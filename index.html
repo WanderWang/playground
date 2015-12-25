@@ -9,26 +9,18 @@
 	<div class="container-fluid">
 		<div class="row-fluid">
 			<div class="span6">
-				<ul class="nav nav-tabs files">
-					<li><a href="#" class="create-new-file">Create new file</a></li>
-				</ul>
-				<div class="tab-content">
-					<div class="tab-pane active">
-						<div class="editor"></div>
-					</div>
-				</div>
+	
+				
 			</div>
 			<div class="span6">
 				<p>
 					<button class="btn btn-primary compile">Compile</button>
 				</p>
-				<ul class="nav nav-tabs">
-					<li class="active"><a href="#stats" data-toggle="tab">Stats</a></li>
-					<li><a href="#iframe" data-toggle="tab">Run</a></li>
-				</ul>
-				<div class="tab-content">
+				<div class="content">
+					<p>Stats</p>
 					<div id="stats" class="tab-pane active"><pre><code class="stats"></code></pre></div>
-					<div id="iframe" class="tab-pane">
+					<p>Preview</p>
+					<div id="iframe" class="tab-pane active">
 						<iframe seamless="true"></iframe>
 					</div>
 				</div>
