@@ -24,16 +24,7 @@ window.onload = function(){
 	}
 
 	function download(item , callback) {
-		var url = "http://10.0.2.128:10800/wander/react/" + item;
-		var setting = {
-			"url": url,
-			"dataType": 'text',
-			"success": function (data) {
-				console.log("save:", item, data)
-				fs.writeFileSync("/folder/" + item, data);
-				callback();
-			}
-		};		
+		var url = "http://10.0.2.128:10800/wander/react/" + item;	
 		var xhr = new XMLHttpRequest();
 		xhr.onreadystatechange = function (){
 			if (xhr.readyState == 4){		
