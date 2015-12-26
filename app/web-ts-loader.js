@@ -8,11 +8,14 @@ var loaderUtils = require('loader-utils');
 var path = require('path');
 var TypeScriptWebpackHost = require('./TypeScriptWebpackHost');
 var service = require("./LanguageService.js");
+var fs = require("fs");
 
 function typescriptLoader(text) {
 
   service.init();
-  return "module.exports = A";
+  var filename = this.resourcePath;
+  var content = fs.readFileSync(filename.replace(".tsx",".js"),"utf-8");
+  return content;
 
   if (this.cacheable) {
     this.cacheable();

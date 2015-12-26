@@ -1,8 +1,9 @@
 module.exports = function (filename) {
 	
+	console.log ("loader-",filename)
+	
 	if (filename.indexOf("web-ts-loader") >= 0){
 		var result = require("./web-ts-loader");
-		result.query = "?jsx=react";
 		return result;
 	}
 	switch (filename) {

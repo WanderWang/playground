@@ -7,7 +7,7 @@ var m = {
 	
 	init:function(){
 		
-		var options = { module: ts.ModuleKind.CommonJS };
+		var options = { module: ts.ModuleKind.CommonJS ,jsx:ts.JsxEmit.React};
 		this.files = helper.createDefaultFileVersionSystem();
     	this.files.init("/");
 		this.host = helper.createDefaultLanguageServiceHost(this.files,options);
