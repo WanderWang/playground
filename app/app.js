@@ -1,5 +1,5 @@
 var $ = require("jquery");
-require("mybootstrap");
+// require("mybootstrap");
 var webpack = require("webpack");
 var fs = require("fs");
 var path = require("path");
