@@ -1,46 +1,49 @@
-var $ = require("jquery");
-// require("mybootstrap");
+
 var webpack = require("webpack");
 var fs = require("fs");
 var path = require("path");
 var async = require("async");
 window.fs = fs;
 
-$(function () {
+
+window.onload = function(){
 
 
-	
 	var compiler = createCompiler();
+	downloadAllFiles();
 
-	function download() {
+	function downloadAllFiles() {
 
-		var files = ["test.js","a.tsx"];
-		async.eachSeries(files, function (item, callback) {
-
-			var url = "http://10.0.2.128:10800/wander/react/" + item;
-			var setting = {
-				"url": url,
-				"dataType": 'text',
-				"success": function (data) {
-					console.log ("save:",item,data)
-					fs.writeFileSync("/folder/" + item, data);
-					callback();
-				}
-			};
-			$.ajax(setting);
-
-
-		}, function (err) {
-			if (!err){
-				$(".compile").click(compile);
+		var files = ["test.js", "a.tsx"];
+		async.eachSeries(files, download, function (err) {
+			if (!err) {
+				var compilerButton = document.getElementById("compilerButton");
+				compilerButton.onclick = compile;
 			}
 		});
 	}
-	download();
 
-	return;
-
-
+	function download(item , callback) {
+		var url = "http://10.0.2.128:10800/wander/react/" + item;
+		var setting = {
+			"url": url,
+			"dataType": 'text',
+			"success": function (data) {
+				console.log("save:", item, data)
+				fs.writeFileSync("/folder/" + item, data);
+				callback();
+			}
+		};		
+		var xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = function (){
+			if (xhr.readyState == 4){		
+				fs.writeFileSync("/folder/" + item, xhr.responseText);
+				callback();
+			}		
+		}
+		xhr.open("get",url);
+		xhr.send();
+	}
 
 
 
@@ -64,8 +67,6 @@ $(function () {
 				filename: "bundle.js"
 			},
 			externals: {
-				// require("jquery") is external and available
-				//  on the global var jQuery
 				"react": "React"
 			}
 		});
@@ -74,8 +75,11 @@ $(function () {
 
 	function compile() {
 		compiler.run(function (err, stats) {
-			if (err) return $(".stats").text(err.stack);
-			$(".stats").text(stats.toString());
+			var statDiv = document.getElementById("stats");
+			if (err) {
+				statDiv.innerText = err.stack;
+			}
+			statDiv.innerText = stats.toString();
 			updatePreview();
 		});
 	}
@@ -83,7 +87,8 @@ $(function () {
 	function updatePreview() {
 
 		var scriptTag = "<script src='http://10.0.2.128:10800/wander/react/react.js'></script>";
-		var bundle = fs.readFileSync("/output/bundle.js").toString()
-		$("iframe")[0].srcdoc = "<html><body>" + scriptTag + "<script>" + bundle + "</script></body></html>";
+		var bundle = fs.readFileSync("/output/bundle.js").toString();
+		var iframe = document.getElementById("iframe");
+		iframe.srcdoc = "<html><body>" + scriptTag + "<script>" + bundle + "</script></body></html>";
 	}
-});
+};
