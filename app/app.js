@@ -77,7 +77,8 @@ window.onload = function(){
 
 	function updatePreview() {
 
-		var scriptTag = "<script src='http://10.0.2.128:10800/wander/react/react.js'></script>";
+		var scriptTag = "<script src='http://10.0.2.128:10800/wander/common/react.min.js'></script>";
+		scriptTag += "<script src='http://10.0.2.128:10800/wander/common/react-dom.min.js'></script>";
 		var bundle = fs.readFileSync("/output/bundle.js").toString();
 		var iframe = document.getElementById("iframe");
 		iframe.srcdoc = "<html><body>" + scriptTag + "<script>" + bundle + "</script></body></html>";

@@ -49,9 +49,8 @@ var filesystem = exports.data = {
 // var startLength = "module.exports = ".length;
 // filesystem.node_modules.typescript.lib["lib.d.ts"] = a.substr(startLength);
 
-var MemoryOutputFilesystem = require("webpack/lib/MemoryOutputFilesystem");
-var MemoryInputFilesystem  = require("enhanced-resolve/lib/MemoryInputFilesystem");
-
+var MemoryOutputFilesystem = require("memory-fs");
+var MemoryInputFilesystem  = require("./MemoryInputFilesystem");
 var inFs = new MemoryInputFilesystem(filesystem);
 var outFs = new MemoryOutputFilesystem(filesystem);
 
