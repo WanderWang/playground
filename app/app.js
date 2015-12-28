@@ -49,7 +49,6 @@ window.onload = function(){
 			entry: "./test.js",
 			module: {
 				loaders: [
-					{ test: /\.css$/, loader: "style-loader!css-loader" },
 					{ test: /\.tsx$/, loader: "web-ts-loader" }
 				]
 			},

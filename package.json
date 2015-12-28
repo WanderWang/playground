@@ -4,16 +4,13 @@
   "author": "Tobias Koppers @sokra",
   "description": "In-browser playground for webpack",
   "dependencies": {
-    "bootstrap": "https://github.com/twitter/bootstrap/tarball/v2.3.2",
-    "enhanced-resolve": "0.5.15",
     "jshint": "^2.8.0",
     "jshint-loader": "^0.8.3",
     "json-loader": "^0.5.4",
     "object-assign": "^4.0.1",
     "raw-loader": "^0.5.1",
-    "style-loader": "0.6.x",
     "typescript": "^1.7.5",
-    "typescript-service-helper": "file:///Users/wander/Documents/EgretProjects/TypeScriptServiceHelper",
+    "typescript-service-helper": "./TypeScriptServiceHelper",
     "webpack": "^1.12.3",
     "webpack-dev-server": "^1.12.1"
   },
