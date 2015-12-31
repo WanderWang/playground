@@ -4,7 +4,7 @@ var fs = require("fs");
 var path = require("path");
 var async = require("async");
 window.fs = fs;
-
+var fsutil = require("./FileUtil");
 
 window.onload = function(){
 
@@ -14,7 +14,7 @@ window.onload = function(){
 
 	function downloadAllFiles() {
 
-		var files = ["test.js", "a.tsx"];
+		var files = ["main.tsx", "comp/a.tsx"];
 		async.eachSeries(files, download, function (err) {
 			if (!err) {
 				var compilerButton = document.getElementById("compilerButton");
@@ -28,7 +28,7 @@ window.onload = function(){
 		var xhr = new XMLHttpRequest();
 		xhr.onreadystatechange = function (){
 			if (xhr.readyState == 4){		
-				fs.writeFileSync("/folder/" + item, xhr.responseText);
+				fsutil.save("/folder/" + item,xhr.responseText);
 				callback();
 			}		
 		}
@@ -46,7 +46,7 @@ window.onload = function(){
 			inputFileSystem: fs,
 			outputFileSystem: fs,
 			context: "/folder",
-			entry: "./test.js",
+			entry: "./main.tsx",
 			module: {
 				loaders: [
 					{ test: /\.tsx$/, loader: "web-ts-loader" }
@@ -57,7 +57,8 @@ window.onload = function(){
 				filename: "bundle.js"
 			},
 			externals: {
-				"react": "React"
+				"react": "React",
+				"react-dom": "ReactDOM"
 			}
 		});
 		return compiler;

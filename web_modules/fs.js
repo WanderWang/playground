@@ -35,14 +35,12 @@ var filesystem = exports.data = {
 		"": true,
 		"react":{
 			"": true,
-			"react.d.ts":require("raw!./react.txt")
+			"react.d.ts":require("raw!./react.txt"),
+			"readct-dom.d.ts":require("raw!./react-dom.txt"),
 		}
 	},
 	"folder": {
-		"": true,
-		"entry.js": new Buffer("//var a = require('./a.tsx');\nconsole.log(a)", "utf-8"),
-		"a.tsx": new Buffer("var A = (<div>a</div>);export = A", "utf-8"),
-		"style.css": new Buffer("body {\n\tbackground: #333;\n\tcolor: #EEE;\n}", "utf-8")
+		"": true
 	}
 };
 // var endLength = a.length;
