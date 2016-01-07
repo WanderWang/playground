@@ -39,8 +39,8 @@ function watch(options: ts.CompilerOptions) {
 
 
 
-watch({ module: ts.ModuleKind.CommonJS,jsx: ts.JsxEmit.React });
-
+// watch({ module: ts.ModuleKind.CommonJS,jsx: ts.JsxEmit.React });
+// 
 //var fileSystem = languageServiceHelper.createDefaultFileVersionSystem();
 //fileSystem.init(process.cwd());
 //console.log (fileSystem.getAllFileName())

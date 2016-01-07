@@ -92,6 +92,7 @@ function createDefaultFileVersionSystem() {
             return files[fileName] && files[fileName].version;
         },
         updateFileVersion: function (fileName) {
+            console.log(fileName);
             var version = parseInt(files[fileName].version);
             files[fileName].version = (version + 1).toString();
         },
