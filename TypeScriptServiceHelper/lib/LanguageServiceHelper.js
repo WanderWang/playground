@@ -33,7 +33,7 @@ function emitFile(services, files, fileName) {
     output.outputFiles.forEach(function (o) {
         var fullPath = path.join(files.getRootDirectory(), o.name);
         fs.writeFileSync(fullPath, o.text, "utf8");
-        files.updateFileVersion(fileName);
+        files.writeFile(fileName, o.text);
     });
 }
 exports.emitFile = emitFile;
@@ -77,10 +77,14 @@ function createDefaultFileVersionSystem() {
                     }
                 });
             };
+            var generateSourceCode = function (fileName) {
+                var fullpathFileName = path.join(rootDirectory, fileName);
+                files[fileName] = { version: "0", text: fs.readFileSync(fullpathFileName, "utf-8") };
+            };
             var arr = [];
             forEach(rootDirectory, function (fileName) { return arr.push(fileName); });
             arr = arr.filter(filterTypeScriptFile);
-            arr.forEach(function (fileName) { return files[fileName] = { version: "0" }; });
+            arr.forEach(generateSourceCode);
             root = rootDirectory;
         },
         forEach: function (callback) {
@@ -91,10 +95,14 @@ function createDefaultFileVersionSystem() {
         getFileVersion: function (fileName) {
             return files[fileName] && files[fileName].version;
         },
-        updateFileVersion: function (fileName) {
+        writeFile: function (fileName, text) {
             console.log(fileName);
-            var version = parseInt(files[fileName].version);
-            files[fileName].version = (version + 1).toString();
+            var code = files[fileName];
+            var version = parseInt(code.version);
+            if (code.text != text) {
+                code.text = text;
+                code.version = (version + 1).toString();
+            }
         },
         getAllFileName: function () {
             var result = [];
